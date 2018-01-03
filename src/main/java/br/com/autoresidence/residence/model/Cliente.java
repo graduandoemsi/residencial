@@ -5,11 +5,17 @@
  */
 package br.com.autoresidence.residence.model;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -17,9 +23,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="clientes")
-public class Cliente {
+public class Cliente implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long registro;
+ 
     @Column(name="cpf")
     private String cpf;
     
@@ -38,15 +49,12 @@ public class Cliente {
     @Column(name="celaular")
     private String celular;
 
-    /*
-    public Cliente(String nome, String cpf, Endereco endereco, String email, String celular) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.endereco = endereco;
-        this.email = email;
-        this.celular = celular;
+    @Column(name="data_cadastro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date data_cadastro;
+
+    public Cliente() {
     }
-*/
 
     public Cliente(String nome, String cpf) {
         this.nome = nome;
@@ -100,20 +108,26 @@ public class Cliente {
     public void setCelular(String celular) {
         this.celular = celular;
     }
+    public Long getRegistro() {
+        return registro;
+    }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.cpf);
-        return hash;
+    public void setRegistro(Long registro) {
+        this.registro = registro;
     }
 
     @Override
     public String toString() {
-        return "Cliente{" + "nome=" + nome + ", cpf=" + cpf + ", endereco=" + endereco + ", email=" + email + ", telefone=" + telefone + ", celular=" + celular + '}';
+        return "Cliente{" + "registro=" + registro + ", cpf=" + cpf + ", nome=" + nome + ", endereco=" + endereco + ", email=" + email + ", telefone=" + telefone + ", celular=" + celular + ", data_cadastro=" + data_cadastro + '}';
     }
 
-    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.registro);
+        return hash;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -126,13 +140,10 @@ public class Cliente {
             return false;
         }
         final Cliente other = (Cliente) obj;
-        if (!Objects.equals(this.cpf, other.cpf)) {
+        if (!Objects.equals(this.registro, other.registro)) {
             return false;
         }
         return true;
     }
-    
-    
-    
-    
+
 }
